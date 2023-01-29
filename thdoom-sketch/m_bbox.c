@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // $Id:$
@@ -17,39 +17,47 @@
 // $Log:$
 //
 // DESCRIPTION:
+//	Main loop menu stuff.
+//	Random number LUT.
+//	Default Config File.
+//	PCX Screenshots.
 //
 //-----------------------------------------------------------------------------
 
 static const char
-rcsid[] = "$Id: m_argv.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
+rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 
 
-#include <string.h>
-
-int		myargc;
-char**		myargv;
-
-
+#ifdef __GNUG__
+#pragma implementation "m_bbox.h"
+#endif
+#include "m_bbox.h"
 
 
-//
-// M_CheckParm
-// Checks for the given parameter
-// in the program's command line arguments.
-// Returns the argument number (1 to argc-1)
-// or 0 if not present
-int M_CheckParm (char *check)
+
+
+void M_ClearBox (fixed_t *box)
 {
-    int		i;
-
-    for (i = 1;i<myargc;i++)
-    {
-	if ( !strcasecmp(check, myargv[i]) )
-	    return i;
-    }
-
-    return 0;
+    box[BOXTOP] = box[BOXRIGHT] = INT_MIN;//MININT;
+    box[BOXBOTTOM] = box[BOXLEFT] = INT_MAX;//MAXINT;
 }
+
+void
+M_AddToBox
+( fixed_t*	box,
+  fixed_t	x,
+  fixed_t	y )
+{
+    if (x<box[BOXLEFT])
+	box[BOXLEFT] = x;
+    else if (x>box[BOXRIGHT])
+	box[BOXRIGHT] = x;
+    if (y<box[BOXBOTTOM])
+	box[BOXBOTTOM] = y;
+    else if (y>box[BOXTOP])
+	box[BOXTOP] = y;
+}
+
 
 
 
